@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Union
 import math
 from collections import Counter
 
@@ -18,9 +18,17 @@ class GradeStatisticsCalculator:
             return sorted_grades[middle_index]
 
     @staticmethod
-    def calculate_mode(grades: List[float]) -> int:
+    def calculate_mode(grades: List[float]) -> Union[float, str, List[float]]:
         counts = Counter(grades)
-        return max(counts, key=counts.get)  # type: ignore
+        max_count = max(counts.values())
+        modes = [grade for grade, count in counts.items() if count ==
+                 max_count]
+        if len(modes) == 1:
+            return modes[0]
+        elif len(modes) == len(grades):
+            return "No Mode"
+        else:
+            return modes
 
     @staticmethod
     def calculate_range(grades: List[float]) -> float:
